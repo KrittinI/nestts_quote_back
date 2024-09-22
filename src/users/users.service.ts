@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/register.dto';
@@ -25,34 +25,24 @@ export class UsersService {
     return this.userRepository.save(createUserDto);
   }
 
-  async login(createUserDto: CreateUserDto) {
-    const user = await this.userRepository.findOneBy({
-      username: createUserDto.username,
-    });
-    if (!user) {
-      throw new Error('username or password not correct');
-    }
-
-    const isMatch = await bcrypt.compare(createUserDto.password, user.password);
-
-    if (!isMatch) {
-      throw new Error('username or password not correct');
-    }
-
-    const payload = { id: user.id, username: user.username };
-
-    return {
-      accesstoken: await jwt.sign(payload, process.env.JWT_SECRET),
-    };
-    return createUserDto;
-  }
-
   async findByUserName(username: string) {
     return this.userRepository.findOneBy({ username });
   }
 
   findOne(username: string) {
     return this.userRepository.findOneBy({ username });
+  }
+
+  findUserByID(id: number) {
+    return this.userRepository.findOneBy({ id });
+  }
+
+  userVoted(id: number) {
+    return this.userRepository.update(id, { isVoted: true });
+  }
+
+  userUnvoted(id: number) {
+    return this.userRepository.update(id, { isVoted: false });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

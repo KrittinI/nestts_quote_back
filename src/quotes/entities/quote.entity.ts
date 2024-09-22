@@ -8,7 +8,7 @@ export class Quote {
   @Column()
   title: string;
 
-  @Column()
+  @Column({ default: 'UNKNOWN' })
   creator: string;
 
   @Column({ default: 0 })
