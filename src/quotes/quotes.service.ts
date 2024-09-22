@@ -19,12 +19,23 @@ export class QuotesService {
     return this.quotesRepository.find();
   }
 
-  findOne(id: number) {
+  findOneBy(id: number) {
     return this.quotesRepository.findOneBy({ id });
   }
 
   update(id: number, updateQuoteDto: UpdateQuoteDto) {
     return this.quotesRepository.update(id, updateQuoteDto);
+  }
+
+  async voted(id: number) {
+    const quote = await this.quotesRepository.findOneBy({ id });
+
+    this.quotesRepository.update(id, { voted: quote.voted + 1 });
+    return { ...quote, voted: quote.voted + 1 };
+  }
+
+  unvoted(id: number) {
+    // return this.quotesRepository.update(id);
   }
 
   remove(id: number) {

@@ -9,7 +9,10 @@ export class Quote {
   title: string;
 
   @Column({ default: 'UNKNOWN' })
-  creator: string;
+  author: string;
+
+  @Column()
+  creator: number;
 
   @Column({ default: 0 })
   voted: number;
