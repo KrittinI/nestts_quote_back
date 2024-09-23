@@ -34,9 +34,9 @@ export class QuotesService {
     return { ...quote, voted: quote.voted + 1 };
   }
 
-  unvoted(id: number) {
-    // return this.quotesRepository.update(id);
-  }
+  // unvoted(id: number) {
+  // return this.quotesRepository.update(id);
+  // }
 
   remove(id: number) {
     return this.quotesRepository.delete(id);

@@ -12,8 +12,8 @@ export class AuthController {
     const { accessToken } = await this.authService.login(req.user);
     // return this.authService.create(createAuthDto);
     // save to cookie
-    res.cookie('access_token', accessToken, { httpOnly: true });
-    // return { accessToken };
+    // res.cookie('access_token', accessToken, { httpOnly: true });
+    return { accessToken };
     return {
       message: 'Login Successful',
     };
