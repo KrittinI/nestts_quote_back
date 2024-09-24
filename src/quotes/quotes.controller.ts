@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Request,
+  Query,
 } from '@nestjs/common';
 import { QuotesService } from './quotes.service';
 import { CreateQuoteDto } from './dto/create-quote.dto';
@@ -30,8 +31,12 @@ export class QuotesController {
   }
 
   @Get()
-  findAll() {
-    return this.quotesService.findAll();
+  findAll(@Query('title') title: string) {
+    if (title) {
+      return this.quotesService.findQuery(title);
+    } else {
+      return this.quotesService.findAll();
+    }
   }
 
   @Get(':id')
@@ -68,7 +73,7 @@ export class QuotesController {
   @Patch(':id/voted')
   async voted(@Param('id') id: string, @Request() req) {
     const user = await this.userService.findUserByID(req.user.id);
-    console.log(user.isVoted);
+    console.log(user.isVoted, 'inherere');
     if (user.isVoted) {
       throw new Error('User already voted');
     }

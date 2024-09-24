@@ -3,7 +3,7 @@ import { CreateQuoteDto } from './dto/create-quote.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateQuoteDto } from './dto/update-quote.dto';
 import { Quote } from './entities/quote.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
 @Injectable()
 export class QuotesService {
@@ -17,6 +17,10 @@ export class QuotesService {
 
   findAll() {
     return this.quotesRepository.find();
+  }
+
+  findQuery(title: string) {
+    return this.quotesRepository.findBy({ title: Like(`%${title}%`) });
   }
 
   findOneBy(id: number) {
